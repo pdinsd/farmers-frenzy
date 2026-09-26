@@ -1,0 +1,62 @@
+/* ------------------------------------------------------------------
+ | Machine switcher and per-theme touches
+ * ------------------------------------------------------------------ */
+
+.slot-main {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.slot-machines {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid #2a2f4a;
+    border-radius: 999px;
+    background: #0e1120;
+}
+
+.slot-machines a {
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-family: var(--font-meter);
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: #c4c9e6;
+    text-decoration: none;
+}
+
+.slot-machines a:hover {
+    color: #fff;
+}
+
+.slot-machines a:focus-visible {
+    outline: 2px solid #f6c343;
+    outline-offset: 2px;
+}
+
+.slot-machines a[aria-current='page'] {
+    color: #1d1300;
+    background: linear-gradient(180deg, #ffe89a, #e0a526);
+}
+
+/* Farmers Frenzy: a blue sky top box to suit the logo, and a hay-gold frame */
+
+.theme-farmers-frenzy .slot-topbox {
+    background: linear-gradient(180deg, #0b3d91 0%, #0a1f5c 60%, #0b1033 100%);
+}
+
+.theme-farmers-frenzy .slot-logo {
+    border-radius: 8px;
+}
+
+.theme-farmers-frenzy .slot-cabinet {
+    border-color: #b07a1c;
+    box-shadow: 0 0 0 2px #000, 0 0 40px rgba(255, 196, 64, 0.3);
+}
+
+.theme-farmers-frenzy .slot-bale-value {
+    color: #3a1a02;
+    text-shadow: 0 0 3px #fff3c4, 0 1px 0 #ffe9a0;
+}
