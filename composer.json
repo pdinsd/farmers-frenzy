@@ -2,9 +2,9 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A Dragon Link style hold-and-spin slot machine simulator with real-time stats and a PAR sheet.",
     "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "require": {
         "php": "^8.3",
         "laravel/framework": "^13.17",
