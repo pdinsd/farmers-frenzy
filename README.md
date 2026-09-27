@@ -225,6 +225,86 @@ the images (this needs the `gd` extension):
 php artisan farmers-frenzy:extract-artwork
 ```
 
+## Setting up VS Code
+
+[Visual Studio Code](https://code.visualstudio.com/) works well for this project once you
+add a few extensions.
+
+### 1. Open the project
+
+Finish the [installation](#installation) steps first, then open the project folder. Use
+**File → Open Folder…**, or run this from the project folder:
+
+```sh
+code .
+```
+
+If you installed PHP, Composer or Node while VS Code was open, close VS Code completely and
+reopen it. Otherwise its terminal and extensions won't find them on your `PATH`.
+
+### 2. Install the recommended extensions
+
+| Extension | ID | What it gives you |
+|---|---|---|
+| [Laravel](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) | `laravel.vscode-laravel` | The official Laravel extension: autocomplete and go-to-definition for routes, views, config keys and `.env` values, plus Blade syntax highlighting |
+| [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) | `bmewburn.vscode-intelephense-client` | PHP autocomplete, type checking and go-to-definition |
+| [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) | `bradlc.vscode-tailwindcss` | Autocomplete and previews for Tailwind classes |
+| [Laravel Pint](https://marketplace.visualstudio.com/items?itemName=open-southeners.laravel-pint) | `open-southeners.laravel-pint` | Formats PHP with the project's code style |
+| [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer) | `qwtel.sqlite-viewer` | Browse `database/database.sqlite` (meters, jackpots, settings) inside VS Code |
+
+Search for each one in the Extensions view (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>,
+or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> on macOS). Or install them all from a
+terminal:
+
+```sh
+code --install-extension laravel.vscode-laravel
+code --install-extension bmewburn.vscode-intelephense-client
+code --install-extension bradlc.vscode-tailwindcss
+code --install-extension open-southeners.laravel-pint
+code --install-extension qwtel.sqlite-viewer
+```
+
+VS Code's built-in PHP language features overlap with Intelephense. To avoid duplicate
+suggestions, open the Extensions view, search for `@builtin php`, and disable
+**PHP Language Features**.
+
+### 3. Run the app from the integrated terminal
+
+Open the terminal with <kbd>Ctrl</kbd>+<kbd>`</kbd>, then split it with the **Split
+Terminal** button so you have two side by side:
+
+```sh
+# Terminal 1: rebuilds CSS and JavaScript as you edit
+npm run dev
+```
+
+```sh
+# Terminal 2: the web server
+php artisan serve
+```
+
+Ctrl+click (Cmd+click on macOS) the `http://127.0.0.1:8000` link in terminal 2 to open the
+game. While `npm run dev` is running, changes to the CSS, JavaScript and Blade views show up
+in the browser straight away.
+
+### 4. Everyday commands
+
+| Task | Command |
+|---|---|
+| Run the tests | `php artisan test` |
+| Format PHP to the project style | `vendor/bin/pint` (the Pint extension can also format on save) |
+| Simulate the game math | `php artisan hay-link:simulate 1000000` |
+| Rebuild the images from the artwork | `php artisan farmers-frenzy:extract-artwork` |
+| Watch the application log | `php artisan pail` |
+
+### 5. AI assistants (optional)
+
+The project comes set up for [Laravel Boost](https://laravel.com/docs/ai).
+[`.mcp.json`](.mcp.json) registers Boost's MCP server (`php artisan boost:mcp`), and
+[`CLAUDE.md`](CLAUDE.md), [`AGENTS.md`](AGENTS.md) and `.claude/skills` hold the project's
+coding guidelines. The Claude Code extension for VS Code picks these up automatically, so it
+can read the database schema, check the logs and search the Laravel docs while it works.
+
 ## Project layout
 
 | Path | What's there |
