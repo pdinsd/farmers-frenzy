@@ -357,6 +357,24 @@
     }
 }
 
+/* A bale flashing past in a spinning window; the spin stripes draw over it. */
+.slot-hold-teaser {
+    position: absolute;
+    inset: 0;
+    opacity: 0.8;
+    filter: blur(0.6px) brightness(1.15);
+    animation: slot-hold-tease 0.11s linear;
+}
+
+@keyframes slot-hold-tease {
+    from {
+        transform: translateY(-18%);
+    }
+    to {
+        transform: translateY(18%);
+    }
+}
+
 .slot-hold-cell.is-landed {
     animation: slot-land 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
 }
@@ -724,6 +742,10 @@
     .slot-meter.is-won,
     .slot-hold-cell.is-spinning::after {
         animation: none;
+    }
+
+    .slot-hold-teaser {
+        display: none;
     }
 }
 

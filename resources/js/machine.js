@@ -8,6 +8,14 @@
 const FILLER_SYMBOLS = ['tractor', 'barn', 'dog', 'milk_bottle', 'king', 'queen', 'jack', 'ten', 'nine', 'farmer', 'moon', 'bale'];
 const REELS = 5;
 const ROWS = 3;
+const CELLS = REELS * ROWS;
+
+/*
+ * While Bale Bonus windows spin, a bale flashes past in each empty window on
+ * this share of ticks, scaled by the chance the next bale really lands.
+ */
+const BALE_TEASE_RATE = 0.25;
+const BALE_TEASE_TICK_MS = 110;
 const JACKPOT_LABELS ={ mini: 'MINI', minor: 'MINOR', major: 'MAJOR', grand: 'GRAND' };
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -990,11 +998,13 @@ class SlotMachine {
 
         empty.forEach((index) => this.holdCells[index].classList.add('is-spinning'));
         this.elements.featureStatus.textContent = 'SPINNING…';
-        await delay(450);
+        const stopTeasing = this.teaseBales(empty, this.landingChance(CELLS - empty.length + 1));
+        await delay(1000);
 
         for (const [order, index] of empty.entries()) {
             await delay(Math.max(25, 90 - order * 4));
             const element = this.holdCells[index];
+            stopTeasing(index);
             element.classList.remove('is-spinning');
 
             if (outcome.landed.includes(index)) {
@@ -1017,6 +1027,59 @@ class SlotMachine {
         if (outcome.finished) {
             await this.collectBaleBonus(outcome, state);
         }
+    }
+
+    /**
+     * The chance that the Nth bale on screen lands on a respin (mirrors the server).
+     */
+    landingChance(nthBale) {
+        const chances = this.game.baleBonus.landing_chances ?? {};
+        const counts = Object.keys(chances).map(Number);
+
+        if (counts.length === 0) {
+            return 0;
+        }
+
+        return chances[nthBale] ?? (nthBale < Math.min(...counts) ? chances[Math.min(...counts)] : 0);
+    }
+
+    /**
+     * Flash bales at random in the spinning empty windows: mostly blanks, with a
+     * bale showing for a moment as often as the odds of one landing allow.
+     * Returns a function that stops (and clears) one window.
+     */
+    teaseBales(indexes, landingChance) {
+        const spinning = new Set(indexes);
+        const chance = landingChance * BALE_TEASE_RATE;
+
+        if (spinning.size === 0 || chance <= 0) {
+            return (index) => spinning.delete(index);
+        }
+
+        const clear = (index) => this.holdCells[index].querySelector('.slot-hold-teaser')?.remove();
+
+        const timer = setInterval(() => {
+            spinning.forEach((index) => {
+                clear(index);
+
+                if (Math.random() < chance) {
+                    const value = { type: 'credits', amount: this.state.total_bet * (1 + Math.floor(Math.random() * 5)) };
+                    this.holdCells[index].insertAdjacentHTML(
+                        'afterbegin',
+                        `<div class="slot-hold-teaser"><img src="${this.image('bale')}" alt="" draggable="false">${this.baleLabel(value)}</div>`,
+                    );
+                }
+            });
+        }, BALE_TEASE_TICK_MS);
+
+        return (index) => {
+            clear(index);
+            spinning.delete(index);
+
+            if (spinning.size === 0) {
+                clearInterval(timer);
+            }
+        };
     }
 
     async collectBaleBonus(outcome, state) {

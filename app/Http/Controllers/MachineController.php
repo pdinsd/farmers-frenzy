@@ -130,7 +130,11 @@ class MachineController extends Controller
             'paytable' => $config['paytable'],
             'scatterPays' => $config['scatter_pays'],
             'freeGames' => $config['free_games'],
-            'baleBonus' => ['trigger_count' => $config['bale_bonus']['trigger_count'], 'respins' => $config['bale_bonus']['respins']],
+            'baleBonus' => [
+                'trigger_count' => $config['bale_bonus']['trigger_count'],
+                'respins' => $config['bale_bonus']['respins'],
+                'landing_chances' => $config['bale_bonus']['landing_chances'],
+            ],
             'jackpotMultipliers' => [
                 'mini' => $config['jackpots']['mini']['bet_multiplier'],
                 'minor' => $config['jackpots']['minor']['bet_multiplier'],
